@@ -1,0 +1,24 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Make test runner executable
+      run: chmod +x test_runner.sh
+    
+    - name: Run tests
+      run: make test
+    
+    - name: Run tests directly (fallback)
+      if: failure()
+      run: ./test_runner.sh
